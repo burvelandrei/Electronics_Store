@@ -6,7 +6,7 @@ from urllib.parse import quote_plus
 
 from dotenv import load_dotenv
 
-from electronics_store.logging_config import logging_settings
+from core.logging_config import logging_settings
 
 load_dotenv()
 
@@ -46,7 +46,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "electronics_store.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
@@ -63,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "electronics_store.wsgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
 
 
 # Database
