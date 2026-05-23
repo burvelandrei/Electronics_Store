@@ -25,12 +25,13 @@ target-version = "py313"
 line-length = 79
 indent-width = 4
 include = ["electronics_store/**/*.py"]
+exclude = ["**/migrations/*.py",]
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
     "ANN003", "ANN204",
-    "D100", "D101", "D104", "D105", "D107", "D205",
+    "D100", "D101", "D104", "D105", "D107", "D205", "D106",
     "D200", "D203", "D212", "D417", "D413",
     "EM101", "EM102",
     "TRY003", "TRY300", "TRY400",
