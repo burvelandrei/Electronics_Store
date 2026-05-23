@@ -1,7 +1,7 @@
 from rest_framework import serializers
+from users.serializers import EmployeeSerializer
 
 from stores.models import Address, Stock, Store, StoreType
-from users.serializers import EmployeeSerializer
 
 
 class AddressSerializer(serializers.ModelSerializer):

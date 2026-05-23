@@ -1,10 +1,9 @@
 from rest_framework.permissions import BasePermission
 from rest_framework.request import Request
-from rest_framework.views import APIView
 
 
 class IsEmployee(BasePermission):
-    def has_permission(self, request: Request, _: APIView) -> bool:
+    def has_permission(self, request: Request, _: object) -> bool:
         """Return True if user is authenticated, active and has a store."""
         return (
             request.user.is_authenticated
