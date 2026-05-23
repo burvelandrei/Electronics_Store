@@ -5,7 +5,7 @@ from django.db import models
 class Employee(AbstractUser):
     patronymic = models.CharField(max_length=100, blank=True)
     phone = models.CharField(max_length=20, blank=True)
-    node = models.ForeignKey(
+    store = models.ForeignKey(
         "stores.Store",
         on_delete=models.PROTECT,
         related_name="employees",
