@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     "stores",
     "products",
     "users",
@@ -103,6 +104,15 @@ AUTH_PASSWORD_VALIDATORS = [
         ),
     },
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "users.permissions.IsEmployee",
+    ],
+}
 
 AUTH_USER_MODEL = "users.Employee"
 
