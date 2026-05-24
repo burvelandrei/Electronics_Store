@@ -15,6 +15,7 @@ class EmployeeAdmin(UserAdmin):
         "store",
     )
     readonly_fields = ("api_key",)
+    ordering = ("id",)
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         (

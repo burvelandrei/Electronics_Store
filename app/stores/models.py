@@ -32,6 +32,7 @@ class Store(models.Model):
     )
 
     class Meta:
+        ordering = ("id",)
         constraints = (
             UniqueConstraint(
                 fields=["type"],
@@ -58,6 +59,7 @@ class Stock(models.Model):
     quantity = models.PositiveIntegerField(default=0)
 
     class Meta:
+        ordering = ("id",)
         unique_together = (("store", "product"),)
 
     def __str__(self):
