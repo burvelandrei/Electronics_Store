@@ -6,7 +6,14 @@ from users.models import Employee
 
 @admin.register(Employee)
 class EmployeeAdmin(UserAdmin):
-    list_display = ("username", "email", "first_name", "last_name", "store")
+    list_display = (
+        "id",
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "store",
+    )
     readonly_fields = ("api_key",)
     fieldsets = (
         (None, {"fields": ("username", "password")}),

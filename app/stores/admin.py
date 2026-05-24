@@ -35,7 +35,7 @@ class StockAvailabilityFilter(SimpleListFilter):
 
 @admin.register(Store)
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ("name", "type", "daily_revenue")
+    list_display = ("id", "name", "type", "daily_revenue")
     actions = ("clear_daily_revenue",)
 
     @admin.action(description="Clear daily revenue")
@@ -73,7 +73,7 @@ class StoreAdmin(admin.ModelAdmin):
 
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
-    list_display = ("store_link", "product_link", "quantity")
+    list_display = ("id", "store_link", "product_link", "quantity")
     list_filter = (StockAvailabilityFilter, "store")
 
     @admin.display(description="Dealer")
