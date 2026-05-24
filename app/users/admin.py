@@ -31,6 +31,7 @@ class EmployeeAdmin(UserAdmin):
                     "is_superuser",
                     "groups",
                     "user_permissions",
+                    "api_key",
                 ),
             },
         ),

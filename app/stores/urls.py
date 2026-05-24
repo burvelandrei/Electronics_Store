@@ -2,6 +2,7 @@ from django.urls import path
 
 from stores.views import (
     DealerAboveAverageView,
+    MyStoreView,
     StoreByProductView,
     StoreDetailView,
     StoreListCreateView,
@@ -16,4 +17,5 @@ urlpatterns = [
         name="dealer-above-average",
     ),
     path("by-product/", StoreByProductView.as_view(), name="store-by-product"),
+    path("my/", MyStoreView.as_view(), name="my-store"),
 ]

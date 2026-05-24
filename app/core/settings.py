@@ -108,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
+        "users.auth.APIKeyAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "users.permissions.IsEmployee",

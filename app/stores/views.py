@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from users.auth import APIKeyAuthentication
 
 from stores.models import Store, StoreType
 from stores.serializers import StoreSerializer
@@ -133,4 +134,27 @@ class StoreByProductView(APIView):
             .prefetch_related("employees", "stock_items__product")
         )
         serializer = StoreSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class MyStoreView(APIView):
+    """Return store data for authenticated employee by API key."""
+
+    authentication_classes = (APIKeyAuthentication,)
+
+    def get(self, request: Request) -> Response:
+        """Return store of the authenticated employee."""
+        if not request.user.store_id:
+            return Response(
+                {"detail": "No store assigned."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        store = get_object_or_404(
+            Store.objects.select_related("address").prefetch_related(
+                "employees",
+                "stock_items__product",
+            ),
+            pk=request.user.store_id,
+        )
+        serializer = StoreSerializer(store)
         return Response(serializer.data)
