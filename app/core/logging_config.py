@@ -39,58 +39,61 @@ class UtcConcurrentTimedRotatingFileHandler(
         )
 
 
-logging_settings = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "default": {
-            "format": (
-                "%(filename)s:%(lineno)d #%(levelname)-8s "
-                "[%(asctime)s] - %(name)s - %(message)s"
-            ),
+def get_logging_settings(*, debug: bool = False) -> dict:
+    """Return logging settings based on debug mode."""
+    level = "DEBUG" if debug else "INFO"
+    return {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "default": {
+                "format": (
+                    "%(filename)s:%(lineno)d #%(levelname)-8s "
+                    "[%(asctime)s] - %(name)s - %(message)s"
+                ),
+            },
         },
-    },
-    "handlers": {
-        "app_file": {
-            "()": UtcConcurrentTimedRotatingFileHandler,
-            "filename": LOG_DIR_GENERAL / "app.log",
-            "formatter": "default",
-            "level": "INFO",
+        "handlers": {
+            "app_file": {
+                "()": UtcConcurrentTimedRotatingFileHandler,
+                "filename": LOG_DIR_GENERAL / "app.log",
+                "formatter": "default",
+                "level": level,
+            },
+            "app_error_file": {
+                "()": UtcConcurrentTimedRotatingFileHandler,
+                "filename": LOG_DIR_ERRORS / "error.log",
+                "formatter": "default",
+                "level": "ERROR",
+            },
+            "celery_file": {
+                "()": UtcConcurrentTimedRotatingFileHandler,
+                "filename": LOG_DIR_CELERY_GENERAL / "celery.log",
+                "formatter": "default",
+                "level": level,
+            },
+            "celery_error_file": {
+                "()": UtcConcurrentTimedRotatingFileHandler,
+                "filename": LOG_DIR_CELERY_ERRORS / "celery_error.log",
+                "formatter": "default",
+                "level": "ERROR",
+            },
+            "console": {
+                "class": "logging.StreamHandler",
+                "formatter": "default",
+                "level": level,
+            },
         },
-        "app_error_file": {
-            "()": UtcConcurrentTimedRotatingFileHandler,
-            "filename": LOG_DIR_ERRORS / "error.log",
-            "formatter": "default",
-            "level": "ERROR",
+        "loggers": {
+            "": {
+                "handlers": ["app_file", "app_error_file", "console"],
+                "level": level,
+                "propagate": False,
+            },
+            "celery": {
+                "handlers": ["celery_file", "celery_error_file", "console"],
+                "level": level,
+                "propagate": False,
+            },
         },
-        "celery_file": {
-            "()": UtcConcurrentTimedRotatingFileHandler,
-            "filename": LOG_DIR_CELERY_GENERAL / "celery.log",
-            "formatter": "default",
-            "level": "INFO",
-        },
-        "celery_error_file": {
-            "()": UtcConcurrentTimedRotatingFileHandler,
-            "filename": LOG_DIR_CELERY_ERRORS / "celery_error.log",
-            "formatter": "default",
-            "level": "ERROR",
-        },
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "default",
-            "level": "INFO",
-        },
-    },
-    "loggers": {
-        "": {
-            "handlers": ["app_file", "app_error_file", "console"],
-            "level": "INFO",
-            "propagate": False,
-        },
-        "celery": {
-            "handlers": ["celery_file", "celery_error_file", "console"],
-            "level": "INFO",
-            "propagate": False,
-        },
-    },
-}
+    }

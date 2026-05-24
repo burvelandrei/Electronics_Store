@@ -6,7 +6,7 @@ from urllib.parse import quote_plus
 
 from dotenv import load_dotenv
 
-from core.logging_config import logging_settings
+from core.logging_config import get_logging_settings
 
 load_dotenv()
 
@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = False
+DEBUG = os.environ.get("DEBUG", "False")
 
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
@@ -150,4 +150,4 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_ENABLE_UTC = True
 
 if not logging.getLogger().handlers:
-    logging.config.dictConfig(logging_settings)
+    logging.config.dictConfig(get_logging_settings(debug=DEBUG))
