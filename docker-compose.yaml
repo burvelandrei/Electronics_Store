@@ -1,4 +1,16 @@
 services:
+  migrations:
+    build: .
+    working_dir: /project/app
+    command: python manage.py migrate
+    restart: "no"
+    env_file: .env
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    networks:
+      - electronics-store
+
   app:
     build: .
     working_dir: /project/app
@@ -10,8 +22,8 @@ services:
       - 8000:8000
     env_file: .env
     depends_on:
-      postgres_db:
-        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
     networks:
@@ -65,8 +77,8 @@ services:
       - ./logs:/project/logs
     env_file: .env
     depends_on:
-      postgres_db:
-        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
     networks:
@@ -81,8 +93,8 @@ services:
       - ./logs:/project/logs
     env_file: .env
     depends_on:
-      postgres_db:
-        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
     networks:
