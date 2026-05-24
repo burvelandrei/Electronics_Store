@@ -38,11 +38,12 @@ class StoreSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs: dict) -> dict:
         """Ensure only one HO can exist."""
-        if (
-            attrs.get("type") == StoreType.HO
-            and Store.objects.filter(type=StoreType.HO).exists()
-        ):
-            raise serializers.ValidationError("HQ already exists.")
+        if attrs.get("type") == StoreType.HO:
+            qs = Store.objects.filter(type=StoreType.HO)
+            if self.instance:
+                qs = qs.exclude(pk=self.instance.pk)
+            if qs.exists():
+                raise serializers.ValidationError("HO already exists.")
         return attrs
 
     def create(self, validated_data: dict) -> Store:

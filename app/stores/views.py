@@ -66,7 +66,7 @@ class StoreDetailView(APIView):
         store = self.get_object(pk)
         if store.type == StoreType.HO:
             return Response(
-                {"detail": "Cannot delete HQ."},
+                {"detail": "Cannot delete HO."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         store.delete()
