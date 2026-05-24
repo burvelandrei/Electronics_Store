@@ -9,7 +9,7 @@ from products.models import Product
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ("id", "brand", "model", "price", "date_release")
+        fields = ("id", "brand", "model", "price", "release_date")
 
     def validate_brand(self, value: str) -> str:
         """Validate brand length."""
@@ -27,7 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
             )
         return value
 
-    def validate_date_release(self, value: date) -> date:
+    def validate_release_date(self, value: date) -> date:
         """Validate release date is not in the future."""
         if value > timezone.now().date():
             raise serializers.ValidationError(

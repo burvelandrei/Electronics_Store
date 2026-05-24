@@ -5,7 +5,7 @@ class Product(models.Model):
     brand = models.CharField(max_length=50)
     model = models.CharField(max_length=25)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    date_release = models.DateField()
+    release_date = models.DateField()
 
     class Meta:
         ordering = ("id",)

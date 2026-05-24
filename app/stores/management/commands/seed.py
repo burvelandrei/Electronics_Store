@@ -37,7 +37,7 @@ class Command(BaseCommand):
             product, _ = Product.objects.get_or_create(
                 brand=brand,
                 model=model,
-                defaults={"price": price, "date_release": release_date},
+                defaults={"price": price, "release_date": release_date},
             )
             self.products.append(product)
         self.stdout.write(f"Created {len(self.products)} products")
