@@ -13,6 +13,7 @@ concurrent-log-handler = "0.9.28"
 python-dotenv = "1.2.2"
 gunicorn = "25.1.0"
 djangorestframework = "3.16.0"
+whitenoise = "6.7.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "0.15.0"
