@@ -19,6 +19,7 @@ class StockSerializer(serializers.ModelSerializer):
 
 
 class StoreSerializer(serializers.ModelSerializer):
+    type = serializers.ChoiceField(choices=StoreType.choices, validators=[])
     address = AddressSerializer()
     employees = EmployeeSerializer(many=True, read_only=True)
     stock_items = StockSerializer(many=True, read_only=True)
