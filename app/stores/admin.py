@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin, SimpleListFilter
 from django.db.models import QuerySet
@@ -6,6 +8,8 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from stores.models import Stock, Store
+
+logger = logging.getLogger(__name__)
 
 
 class StockAvailabilityFilter(SimpleListFilter):
@@ -33,10 +37,18 @@ class StoreAdmin(admin.ModelAdmin):
     list_display = ("name", "type", "daily_revenue")
     actions = ("clear_daily_revenue",)
 
-    @admin.action(description="Clear daily revenue")
-    def clear_daily_revenue(self, _: HttpRequest, queryset: QuerySet) -> None:
+    def clear_daily_revenue(
+        self,
+        request: HttpRequest,
+        queryset: QuerySet,
+    ) -> None:
         """Clear daily revenue for selected stores."""
+        count = queryset.count()
         queryset.update(daily_revenue=0)
+        logger.info(
+            f"Daily revenue cleared for {count} stores by "
+            f"{request.user.username}",
+        )
 
 
 @admin.register(Stock)
