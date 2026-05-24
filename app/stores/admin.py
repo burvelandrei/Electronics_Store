@@ -7,7 +7,7 @@ from django.http import HttpRequest
 from django.urls import reverse
 from django.utils.html import format_html
 
-from stores.models import Stock, Store
+from stores.models import Address, Stock, Store
 from stores.tasks import reset_selected_stores_revenue
 
 logger = logging.getLogger(__name__)
@@ -31,6 +31,11 @@ class StockAvailabilityFilter(SimpleListFilter):
         if self.value() == "out_of_stock":
             return queryset.filter(quantity=0)
         return queryset
+
+
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ("id", "country", "city", "street", "house")
 
 
 @admin.register(Store)

@@ -14,6 +14,9 @@ class Address(TimeStampedModel):
     street = models.CharField(max_length=100)
     house = models.CharField(max_length=20)
 
+    class Meta:
+        ordering = ("id",)
+
     def __str__(self):
         return f"{self.country}, {self.city}, {self.street}, {self.house}"
 
