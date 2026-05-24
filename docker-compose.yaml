@@ -54,6 +54,38 @@ services:
     networks:
       - electronics-store
 
+  celery_worker:
+    build: .
+    working_dir: /project/app
+    command: celery -A core worker -l info
+    restart: unless-stopped
+    volumes:
+      - ./logs:/project/logs
+    env_file: .env
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - electronics-store
+
+  celery_beat:
+    build: .
+    working_dir: /project/app
+    command: celery -A core beat -l info
+    restart: unless-stopped
+    volumes:
+      - ./logs:/project/logs
+    env_file: .env
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - electronics-store
+
 volumes:
   pg_data:
   redis_data:
