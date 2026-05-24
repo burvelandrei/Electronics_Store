@@ -43,3 +43,4 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "app/manage.py" = ["PLC0415"]
 "app/core/celery.py" = ["D103", "ANN002"]
+"app/stores/tasks.py" = ["S311"]
