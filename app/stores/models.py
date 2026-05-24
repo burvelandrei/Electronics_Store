@@ -1,3 +1,4 @@
+from core.mixins import TimeStampedModel
 from django.db import models
 from django.db.models import Q, UniqueConstraint
 
@@ -7,7 +8,7 @@ class StoreType(models.TextChoices):
     DEALER = "DEALER"
 
 
-class Address(models.Model):
+class Address(TimeStampedModel):
     country = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     street = models.CharField(max_length=100)
@@ -17,7 +18,7 @@ class Address(models.Model):
         return f"{self.country}, {self.city}, {self.street}, {self.house}"
 
 
-class Store(models.Model):
+class Store(TimeStampedModel):
     type = models.CharField(max_length=20, choices=StoreType.choices)
     name = models.CharField(max_length=50)
     address = models.OneToOneField(
@@ -45,7 +46,7 @@ class Store(models.Model):
         return self.name
 
 
-class Stock(models.Model):
+class Stock(TimeStampedModel):
     store = models.ForeignKey(
         Store,
         on_delete=models.CASCADE,

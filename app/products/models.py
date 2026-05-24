@@ -1,7 +1,8 @@
+from core.mixins import TimeStampedModel
 from django.db import models
 
 
-class Product(models.Model):
+class Product(TimeStampedModel):
     brand = models.CharField(max_length=50)
     model = models.CharField(max_length=25)
     price = models.DecimalField(max_digits=10, decimal_places=2)
