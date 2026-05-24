@@ -28,8 +28,8 @@ COPY --from=builder /usr/local/lib/python3.13/site-packages/ /usr/local/lib/pyth
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
 COPY app/ ./app/
-COPY entrypoint.sh ./entrypoint.sh
+COPY entrypoint.sh /project/entrypoint.sh
 
-RUN chmod +x ./entrypoint.sh
+RUN chmod +x /project/entrypoint.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/project/entrypoint.sh"]
