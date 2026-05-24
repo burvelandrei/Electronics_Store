@@ -1,6 +1,6 @@
 import logging
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin import ModelAdmin, SimpleListFilter
 from django.db.models import QuerySet
 from django.http import HttpRequest
@@ -52,11 +52,22 @@ class StoreAdmin(admin.ModelAdmin):
                 f"{request.user.username}",
             )
             reset_selected_stores_revenue.delay(pks)
+            self.message_user(
+                request,
+                f"Daily revenue reset is being processed asynchronously for "
+                f"{len(pks)} stores.",
+                level=messages.SUCCESS,
+            )
         else:
             queryset.update(daily_revenue=0)
             logger.info(
                 f"Sync clear daily revenue for {len(pks)} stores by "
                 f"{request.user.username}",
+            )
+            self.message_user(
+                request,
+                f"Daily revenue cleared for {len(pks)} stores.",
+                level=messages.SUCCESS,
             )
 
 
