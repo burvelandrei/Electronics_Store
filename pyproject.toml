@@ -46,3 +46,4 @@ ignore = [
 "app/stores/tasks.py" = ["S311"]
 "app/stores/admin.py" = ["PLR2004"]
 "app/**/serializers.py" = ["PLR2004"]
+"app/stores/management/commands/seed.py" = ["ARG002", "ANN002", "S311"]
