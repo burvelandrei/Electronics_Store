@@ -12,8 +12,6 @@ from stores.tasks import reset_selected_stores_revenue
 
 logger = logging.getLogger(__name__)
 
-ASYNC_THRESHOLD = 5
-
 
 class StockAvailabilityFilter(SimpleListFilter):
     title = "Availability"
@@ -48,7 +46,7 @@ class StoreAdmin(admin.ModelAdmin):
     ) -> None:
         """Clear daily revenue — async if more than 5 stores selected."""
         pks = list(queryset.values_list("pk", flat=True))
-        if len(pks) > ASYNC_THRESHOLD:
+        if len(pks) > 5:
             logger.info(
                 f"Async clear daily revenue for {len(pks)} stores by "
                 f"{request.user.username}",

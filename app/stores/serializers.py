@@ -46,6 +46,14 @@ class StoreSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("HO already exists.")
         return attrs
 
+    def validate_name(self, value: str) -> str:
+        """Validate store name length."""
+        if len(value) > 50:
+            raise serializers.ValidationError(
+                "Name must be 50 characters or less.",
+            )
+        return value
+
     def create(self, validated_data: dict) -> Store:
         """Create store with nested address."""
         address_data = validated_data.pop("address")
