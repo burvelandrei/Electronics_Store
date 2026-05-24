@@ -115,3 +115,10 @@ def reset_daily_revenue() -> None:
         daily_revenue=0,
     )
     logger.info(f"Reset daily revenue for {updated} dealers")
+
+
+@shared_task
+def reset_selected_stores_revenue(pks: list[int]) -> None:
+    """Reset daily revenue for selected stores."""
+    updated = Store.objects.filter(pk__in=pks).update(daily_revenue=0)
+    logger.info(f"Async reset daily revenue for {updated} stores")

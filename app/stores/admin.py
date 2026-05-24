@@ -8,8 +8,11 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from stores.models import Stock, Store
+from stores.tasks import reset_selected_stores_revenue
 
 logger = logging.getLogger(__name__)
+
+ASYNC_THRESHOLD = 5
 
 
 class StockAvailabilityFilter(SimpleListFilter):
@@ -37,18 +40,26 @@ class StoreAdmin(admin.ModelAdmin):
     list_display = ("name", "type", "daily_revenue")
     actions = ("clear_daily_revenue",)
 
+    @admin.action(description="Clear daily revenue")
     def clear_daily_revenue(
         self,
         request: HttpRequest,
         queryset: QuerySet,
     ) -> None:
-        """Clear daily revenue for selected stores."""
-        count = queryset.count()
-        queryset.update(daily_revenue=0)
-        logger.info(
-            f"Daily revenue cleared for {count} stores by "
-            f"{request.user.username}",
-        )
+        """Clear daily revenue — async if more than 5 stores selected."""
+        pks = list(queryset.values_list("pk", flat=True))
+        if len(pks) > ASYNC_THRESHOLD:
+            logger.info(
+                f"Async clear daily revenue for {len(pks)} stores by "
+                f"{request.user.username}",
+            )
+            reset_selected_stores_revenue.delay(pks)
+        else:
+            queryset.update(daily_revenue=0)
+            logger.info(
+                f"Sync clear daily revenue for {len(pks)} stores by "
+                f"{request.user.username}",
+            )
 
 
 @admin.register(Stock)
