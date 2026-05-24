@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -11,6 +13,11 @@ class Employee(AbstractUser):
         related_name="employees",
         null=True,
         blank=True,
+    )
+    api_key = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
     )
 
     def get_full_name(self) -> str:
