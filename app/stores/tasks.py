@@ -73,20 +73,19 @@ def process_hourly_sales() -> None:
 def send_out_of_stock_email(stock_item_pk: int, dealer_pk: int) -> None:
     """Send email to HO employee when product is out of stock."""
     try:
-        stock_item = Stock.objects.select_related(
-            "product",
-            "store__address",
-        ).get(pk=stock_item_pk)
+        stock_item = Stock.objects.select_related("product").get(
+            pk=stock_item_pk,
+        )
         dealer = Store.objects.select_related("address").get(pk=dealer_pk)
-        ho_employee = (
+        ho_store = (
             Store.objects.filter(type=StoreType.HO)
             .prefetch_related("employees")
             .first()
         )
-        if not ho_employee:
+        if not ho_store:
             logger.error("No HO found, cannot send email")
             return
-        employee = ho_employee.employees.first()
+        employee = ho_store.employees.first()
         if not employee:
             logger.error("No HO employee found, cannot send email")
             return
