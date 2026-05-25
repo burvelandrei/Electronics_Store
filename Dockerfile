@@ -1,7 +1,7 @@
 FROM python:3.13.3-slim AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc g++ pkg-config python3-dev build-essential \
+    gcc \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install poetry==2.2.1
@@ -17,9 +17,6 @@ RUN poetry install --only-root --no-interaction --no-ansi
 
 
 FROM python:3.13.3-slim
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /project
 
