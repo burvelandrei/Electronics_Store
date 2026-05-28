@@ -18,9 +18,7 @@ class APIKeyAuthentication(BaseAuthentication):
         if not api_key:
             return None
         try:
-            employee = Employee.objects.select_related("store").get(
-                api_key=api_key,
-            )
+            employee = Employee.objects.get(api_key=api_key)
         except Employee.DoesNotExist as e:
             logger.warning(f"Invalid API key: {api_key}")
             raise AuthenticationFailed("Invalid API key.") from e
