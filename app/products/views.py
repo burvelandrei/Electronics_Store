@@ -61,9 +61,9 @@ class ProductDetailView(APIView):
     def delete(self, _: Request, pk: int) -> Response:
         """Delete product."""
         product = self.get_object(pk)
+        product.delete()
         logger.info(
             f"Product deleted: {product.brand} {product.model} "
             f"(id={product.pk})",
         )
-        product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

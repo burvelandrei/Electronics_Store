@@ -79,8 +79,8 @@ class StoreDetailView(APIView):
                 {"detail": "Cannot delete HO."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        logger.info(f"Store deleted: {store.name} (id={store.pk})")
         store.delete()
+        logger.info(f"Store deleted: {store.name} (id={store.pk})")
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
